@@ -8,14 +8,14 @@
         mc:Ignorable="d"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource VMLocator}}"
         WindowStartupLocation="CenterScreen"
-        Height="768" Width="1024"
+        Height="800" Width="1280" MaxHeight="800" MaxWidth="1280"
         WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized" Background="#0F3E38">
     <Window.Resources>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="6*"/>
             <RowDefinition Height="60*"/>
             <RowDefinition Height="28"/>
         </Grid.RowDefinitions>
@@ -45,32 +45,10 @@
             </MenuItem>
         </Menu>
         <TextBlock Text="{Binding Velosity, StringFormat=скорость {0} м/с}"
-               VerticalAlignment="Center" HorizontalAlignment="Left"
+               VerticalAlignment="Top" HorizontalAlignment="Center"
                FontSize="20" Margin="8"
                Foreground="#4CFFFFFF"/>
-        <StackPanel Orientation="Horizontal" Width="560" 
-                    HorizontalAlignment="Center" VerticalAlignment="Center">
-            
-            <TextBlock Text="{Binding AllOK, StringFormat=За смену: {0}}"     
-                       FontSize="30" Margin="0"    
-                       Foreground="#FFC477" 
-                       HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            
-            <Separator Opacity="0" Width="40"/>
-            
-            <TextBlock Text="{Binding AllDB, StringFormat=в БД: {0}}"         
-                       FontSize="30" Margin="0" Foreground="#FFC477"
-                       HorizontalAlignment="Center" VerticalAlignment="Top"
-                       Visibility="{Binding IsEnable,Converter={StaticResource VisibilityConverter}}" />
-            
-            <Separator Opacity="0" Width="20"/>
-            
-            <Button Content ="БД" Command="{Binding GetAllCountsFromDBCmd}"    
-                    Width="40" Height="40"
-                    HorizontalAlignment="Right" VerticalAlignment="Top" 
-                    Visibility="{Binding IsEnable,Converter={StaticResource VisibilityConverter}}" 
-                    Style="{StaticResource ButtonGreen}"/>
-        </StackPanel>
+        
         <Button Grid.Row="0" Style="{StaticResource ButtonOnOffSystem}" 
                 HorizontalAlignment="Right" VerticalAlignment="Center"
                 Command="{Binding OnOffSystemCommand}"
@@ -140,7 +118,7 @@
             <TabItem Header="Авто сканер">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="35*"/>
+                        <RowDefinition Height="28*"/>
                         <RowDefinition Height="60*"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
@@ -471,7 +449,7 @@
                     </Grid.Resources>
                     <StackPanel Grid.Column="0" Margin="10">
                         <Label Content="Список продукции"/>
-                        <ListBox Name="LBProducts" Height="386" 
+                        <ListBox Name="LBProducts" Height="340" 
                                  ItemsSource="{Binding Products}"
                                  Background="#4C000000" 
                                  BorderThickness="1" BorderBrush="#4CFFFFFF"

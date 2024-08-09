@@ -19,6 +19,5 @@ namespace ProductLabeling.Models.Interfaces.FirstStage
         public Product? SelectedProduct { get; set; }
 
         public Counter Counter { get; }
-        public long GetAllCountsFromDB();
     }
 }

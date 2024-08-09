@@ -274,7 +274,6 @@ namespace ProductLabeling.ViewModels
         public ICommand SaveProductCommand => new RelayCommand(SaveProduct);
         public ICommand HandCodeReaderSwitchingModeCommand => new RelayCommand(HandCodeReaderSwitchingMode);
         public ICommand ClearErrorCommand => new RelayCommand(ClearError);
-        public ICommand GetAllCountsFromDBCmd => new RelayCommand(() => AllDB = _model.FirstStage.AutoReading.GetAllCountsFromDB());
         #endregion
 
         private void HandCodeReaderSwitchingMode()

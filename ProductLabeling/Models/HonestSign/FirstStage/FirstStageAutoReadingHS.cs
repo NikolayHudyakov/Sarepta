@@ -152,12 +152,12 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
 
             _timerDb.Restart();
 
-            var res = _dataBase!.ExecuteSqlRaw(
+            var res = _dataBase.ExecuteSqlRaw(
                 """
-                INSERT INTO codes (dtime_ins, code, status, dtime_status, batch)
-                VALUES ({0}, {1}, {2}, {3}, {4});
+                INSERT INTO codes (dtime_ins, code, status, dtime_status)
+                VALUES ({0}, {1}, {2}, {3});
                 """,
-                dateTimeNow, code, Status1, dateTimeNow, $"{SelectedProduct.Name}_{dateNowForBatch}");
+                dateTimeNow, code, Status1, dateTimeNow);
 
             _timerDb.Stop();
             TimeDb?.Invoke(_timerDb.Elapsed.TotalMilliseconds);
@@ -188,26 +188,6 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
         }
         #endregion
 
-        public long GetAllCountsFromDB()
-        {
-            long count = 0;
-            var dateNow = DateTime.Now.ToString("yyyy-MM-dd");
-            if (_dataBase.Connected)
-            {
-                var res = _dataBase.FromSqlRaw(
-                    "select count(*) from codes where dtime_status like {0} and code like {1} and status={2}; ",
-                    dateNow + "%", "01"+SelectedProduct.Gtin + "%", 1
-                    );
-                count = (long)res.Rows[0]["count"];
-                return count;
-            }
-            else
-            {
-                Message?.Invoke("Нет подключения к БД");
-                return 0;
-            }
-
-        }
         ~FirstStageAutoReadingHS()
         {
             _ioModule.ReadDI -= IoModuleReadDI;

@@ -103,12 +103,12 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
 
             _timerDb.Restart();
 
-            var res = _dataBase!.ExecuteSqlRaw(
+            var res = _dataBase.ExecuteSqlRaw(
                 """
-                INSERT INTO codes (dtime_ins, code, status, dtime_status, batch)
+                INSERT INTO codes (dtime_ins, code, status, dtime_status)
                 VALUES ({0}, {1}, {2}, {3}, {4});
                 """,
-                dateTimeNow, data, Status1, dateTimeNow, $"{SelectedProduct!.Name}_{dateNowForBatch}");
+                dateTimeNow, data, Status1, dateTimeNow);
 
             _timerDb.Stop();
             TimeDb?.Invoke(_timerDb.Elapsed.TotalMilliseconds);
@@ -132,7 +132,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
 
             _timerDb.Restart();
 
-            var res = _dataBase!.ExecuteSqlRaw(
+            var res = _dataBase.ExecuteSqlRaw(
                 """
                 DELETE FROM codes
                 WHERE code = {0};
