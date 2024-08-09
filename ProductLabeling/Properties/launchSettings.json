@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ProductLabeling": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false,
+      "remoteDebugMachine": "DESKTOP-T4FL3KM:4026"
+    }
+  }
+}

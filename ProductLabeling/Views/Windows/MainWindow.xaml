@@ -1,0 +1,549 @@
+﻿<Window x:Class="ProductLabeling.Views.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProductLabeling.Views.Windows"
+        xmlns:cmd="clr-namespace:ProductLabeling.Commands"
+        mc:Ignorable="d"
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource VMLocator}}"
+        WindowStartupLocation="CenterScreen"
+        Height="768" Width="1024"
+        WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized" Background="#0F3E38">
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="28"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
+              Background="Transparent" FontSize="20" Foreground="#FFFF6F3A">
+            <MenuItem Header="Меню">
+                <MenuItem Header="Настройки">
+                    <MenuItem.Command>
+                        <cmd:AppSettingShowDialogCommand/>
+                    </MenuItem.Command>
+                </MenuItem>
+                <MenuItem Header="Свернуть"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:MainWindow}}">
+                    <MenuItem.Command>
+                        <cmd:CollapseWindowAndStartExplorerCommand/>
+                    </MenuItem.Command>
+                </MenuItem>
+                <MenuItem Header="Выход"
+                          Command="{Binding ExitAndStartExplorerCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
+                <MenuItem Header="Перезагрузка"
+                          Command="{Binding RebootCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
+                <MenuItem Header="Выключение"
+                          Command="{Binding ShutdownCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
+            </MenuItem>
+        </Menu>
+        <TextBlock Text="{Binding Velosity, StringFormat=скорость {0} м/с}"
+               VerticalAlignment="Center" HorizontalAlignment="Left"
+               FontSize="20" Margin="8"
+               Foreground="#4CFFFFFF"/>
+        <StackPanel Orientation="Horizontal" Width="560" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+            
+            <TextBlock Text="{Binding AllOK, StringFormat=За смену: {0}}"     
+                       FontSize="30" Margin="0"    
+                       Foreground="#FFC477" 
+                       HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            
+            <Separator Opacity="0" Width="40"/>
+            
+            <TextBlock Text="{Binding AllDB, StringFormat=в БД: {0}}"         
+                       FontSize="30" Margin="0" Foreground="#FFC477"
+                       HorizontalAlignment="Center" VerticalAlignment="Top"
+                       Visibility="{Binding IsEnable,Converter={StaticResource VisibilityConverter}}" />
+            
+            <Separator Opacity="0" Width="20"/>
+            
+            <Button Content ="БД" Command="{Binding GetAllCountsFromDBCmd}"    
+                    Width="40" Height="40"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Visibility="{Binding IsEnable,Converter={StaticResource VisibilityConverter}}" 
+                    Style="{StaticResource ButtonGreen}"/>
+        </StackPanel>
+        <Button Grid.Row="0" Style="{StaticResource ButtonOnOffSystem}" 
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Command="{Binding OnOffSystemCommand}"
+                Width="220" Height="40" Margin="8" Tag="{Binding IsEnable}"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Style.Setters>
+                        <Setter Property="Width" Value="100"/>
+                        <Setter Property="Height" Value="20"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="Background" Value="Red"/>
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="true">
+                            <Setter Property="Background" Value="Lime"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="{x:Type StackPanel}">
+                    <Style.Setters>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                    </Style.Setters>
+                </Style>
+                <Style TargetType="{x:Type Label}">
+                    <Style.Setters>
+                        <Setter Property="Foreground" Value="#7FFFFFFF"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="FontSize" Value="18"/>
+                    </Style.Setters>
+                </Style>
+            </Grid.Resources>
+            <StackPanel Grid.Column="0">
+                <Label Content="IO модуль"/>
+                <Border Tag="{Binding IoModuleStatus}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Label Content="Авто cканер"/>
+                <Border Tag="{Binding CodeReaderStatus}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <Label Content="Ручной cканер"/>
+                <Border Tag="{Binding HandCodeReaderStatus}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="3">
+                <Label Content="База данных"/>
+                <Border Tag="{Binding DataBaseStatus}"/>
+            </StackPanel>
+        </Grid>
+        <TabControl Grid.Row="2" BorderThickness="0">
+            <TabControl.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#79000000"/>
+                    <GradientStop Color="#44000000" Offset="0.5"/>
+                    <GradientStop Color="#79000000" Offset="1"/>
+                </LinearGradientBrush>
+            </TabControl.Background>
+            <TabItem Header="Авто сканер">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35*"/>
+                        <RowDefinition Height="60*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Style.Setters>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style.Setters>
+                            </Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Style.Setters>
+                                    <Setter Property="Foreground" Value="#4CFFFFFF"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="FontSize" Value="30"/>
+                                </Style.Setters>
+                            </Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Setters>
+                                    <Setter Property="Foreground" Value="white"/>
+                                    <Setter Property="FontSize" Value="60"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style.Setters>
+                            </Style>
+                        </Grid.Resources>
+                        <StackPanel Grid.Column="0">
+                            <Label Content="Всего"/>
+                            <TextBlock Text="{Binding TotalStage1}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Label Content="Считано"/>
+                            <TextBlock Text="{Binding ReadStage1}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <Label Content="ОК"/>
+                            <TextBlock Text="{Binding OkStage1}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3">
+                            <Label Content="Брак"/>
+                            <TextBlock Text="{Binding NgStage1}"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="300"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBox}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type TextBox}">
+                                            <Border CornerRadius="2" 
+                                                    BorderThickness="1" BorderBrush="#4CFFFFFF"
+                                                    Background="#4C000000">
+                                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" 
+                                                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Setter Property="VerticalAlignment" Value="Top"/>
+                                <Setter Property="FontSize" Value="30"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Margin" Value="6,0,0,0"/>
+                            </Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Style.Setters>
+                                    <Setter Property="Foreground" Value="#4CFFFFFF"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                </Style.Setters>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="105"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0">
+                                <Label Content="Выбор продукта"/>
+                                <ComboBox Grid.Row="0"
+                                          VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                                          ItemsSource="{Binding Products}" SelectedValue="{Binding SelectedProduct}"
+                                          SelectedIndex="0" MaxWidth="674" MinWidth="100"
+                                          Height="65"
+                                          FontWeight="Normal" Margin="6,0,0,0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Name}" FontSize="24"/>
+                                                <TextBlock Text="{Binding Gtin}" FontSize="20" Foreground="#4CFFFFFF"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1">
+                                <Label Content="Код"/>
+                                <TextBox Text="{Binding CodeReaderData}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2">
+                                <Label Content="Сообщение"/>
+                                <TextBox Text="{Binding MessageStage1}"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Label HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   FontSize="150" Tag="{Binding Status}">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="true">
+                                                <Setter Property="Foreground" Value="Lime"/>
+                                                <Setter Property="Content" Value="OK"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="false">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                                <Setter Property="Content" Value="NG"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                            <Button VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                    Style="{StaticResource ButtonReset}"
+                                    Command="{Binding ResetStage1Command}"/>
+                            <StackPanel HorizontalAlignment="Left" Margin="30">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Setters>
+                                            <Setter Property="FontSize" Value="20"/>
+                                            <Setter Property="Foreground" Value="#7FFFFFFF"/>
+                                        </Style.Setters>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Grid>
+                                    <TextBlock Text="IO модуль (мс)"/>
+                                    <TextBlock Text="{Binding TimeDI0}" Margin="180,0,0,0" Foreground="#FFD580"/>
+                                </Grid>
+                                <Grid>
+                                    <TextBlock Text="Сканер (мс)"/>
+                                    <TextBlock Text="{Binding TimeCodeReader}" Margin="180,0,0,0" Foreground="#FFD580"/>
+                                </Grid>
+                                <Grid>
+                                    <TextBlock Text="База данных (мс)"/>
+                                    <TextBlock Text="{Binding FirstStageAutoTimeDb}" Margin="180,0,0,0" Foreground="#FFD580"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Ручной сканер">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35*"/>
+                        <RowDefinition Height="60*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Style.Setters>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style.Setters>
+                            </Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Style.Setters>
+                                    <Setter Property="Foreground" Value="#4CFFFFFF"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="FontSize" Value="30"/>
+                                </Style.Setters>
+                            </Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Setters>
+                                    <Setter Property="Foreground" Value="white"/>
+                                    <Setter Property="FontSize" Value="60"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style.Setters>
+                            </Style>
+                        </Grid.Resources>
+                        <StackPanel Grid.Column="0">
+                            <Label Content="Добавлено"/>
+                            <TextBlock Text="{Binding OkHand}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Label Content="Удалено"/>
+                            <TextBlock Text="{Binding NgHand}"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="300"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBox}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type TextBox}">
+                                            <Border CornerRadius="2" 
+                                                    BorderThickness="1" BorderBrush="#4CFFFFFF"
+                                                    Background="#4C000000">
+                                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" 
+                                                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Setter Property="VerticalAlignment" Value="Top"/>
+                                <Setter Property="FontSize" Value="30"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Margin" Value="6,0,0,0"/>
+                            </Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Style.Setters>
+                                    <Setter Property="Foreground" Value="#4CFFFFFF"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                </Style.Setters>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="105"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0">
+                                <Label Content="Выбор режима"/>
+                                <Button Style="{StaticResource ButtonAddRemove}"
+                                        Width="150" Height="40" FontSize="24" Margin="6,0,0,0"
+                                        HorizontalAlignment="Left" Tag="{Binding HandCodeReaderSelectedMode}"
+                                        Command="{Binding HandCodeReaderSwitchingModeCommand}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1">
+                                <Label Content="Код"/>
+                                <TextBox Text="{Binding HandCodeReaderData}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2">
+                                <Label Content="Сообщение"/>
+                                <TextBox Text="{Binding MessageHand}"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Label HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   FontSize="150" Tag="{Binding StatusHand}">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="true">
+                                                <Setter Property="Foreground" Value="Lime"/>
+                                                <Setter Property="Content" Value="OK"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="false">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                                <Setter Property="Content" Value="NG"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                            <Button VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                    Style="{StaticResource ButtonReset}"
+                                    Command="{Binding ResetHandCommand}"/>
+                            <StackPanel HorizontalAlignment="Left" Margin="30">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Setters>
+                                            <Setter Property="FontSize" Value="20"/>
+                                            <Setter Property="Foreground" Value="#7FFFFFFF"/>
+                                        </Style.Setters>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Grid>
+                                    <TextBlock Text="База данных (мс)"/>
+                                    <TextBlock Text="{Binding FirstStageHandTimeDb}" Margin="180,0,0,0" Foreground="#FFD580"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Продукция">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TextBox}">
+                                        <Border CornerRadius="2" 
+                                                    BorderThickness="1" BorderBrush="#4CFFFFFF"
+                                                    Background="#4C000000">
+                                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" 
+                                                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="CaretBrush" Value="#FFFF6F3A"/>
+                            <Setter Property="VerticalAlignment" Value="Top"/>
+                            <Setter Property="FontSize" Value="25"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Margin" Value="6,0,0,0"/>
+                        </Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Style.Setters>
+                                <Setter Property="Foreground" Value="#4CFFFFFF"/>
+                                <Setter Property="FontSize" Value="20"/>
+                            </Style.Setters>
+                        </Style>
+                    </Grid.Resources>
+                    <StackPanel Grid.Column="0" Margin="10">
+                        <Label Content="Список продукции"/>
+                        <ListBox Name="LBProducts" Height="386" 
+                                 ItemsSource="{Binding Products}"
+                                 Background="#4C000000" 
+                                 BorderThickness="1" BorderBrush="#4CFFFFFF"
+                                 Foreground="White" FontSize="20"
+                                 Margin="6,0,0,0"
+                                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                            <ListBox.ItemTemplate>
+                                <ItemContainerTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Path=Name}"
+                                                   FontSize="24"/>
+                                        <TextBlock Text="{Binding Path=Gtin}"
+                                                   FontSize="20" Foreground="#4CFFFFFF"/>
+                                    </StackPanel>
+                                </ItemContainerTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                    <Grid Grid.Column="1" Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="100"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" Grid.Row="0">
+                            <Label Content="Название"/>
+                            <TextBox Text="{Binding ElementName=LBProducts, Path=SelectedItem.Name}"/>
+                            <Label Content="Gtin"/>
+                            <TextBox Text="{Binding ElementName=LBProducts, Path=SelectedItem.Gtin}"
+                                     InputScope="Number"/>
+                            <Grid Margin="30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Добавить" Style="{StaticResource ButtonGreen}"
+                                    Grid.Column="0" Width="150" Height="40" FontSize="24"
+                                    Command="{Binding AddProductCommand}"/>
+                                <Button Content="Удалить" Style="{StaticResource ButtonRed}"
+                                    Grid.Column="1" Width="150" Height="40" FontSize="24"
+                                    Command="{Binding RemoveProductCommand}"
+                                    CommandParameter="{Binding ElementName=LBProducts, Path=SelectedIndex}"/>
+                            </Grid>
+                        </StackPanel>
+                        <Button Content="Сохраниить" Grid.Row="1"
+                                Style="{StaticResource ButtonGreen}"
+                                Grid.Column="0" Width="150" Height="40" FontSize="24"
+                                Command="{Binding SaveProductCommand}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"/>
+                        <Button FontSize="20" Width="50" Grid.Row="1"  Visibility="Collapsed"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Source="/Views/Icons/keyboard.png"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Button.Command>
+                                <cmd:ShowKeyboardCommand/>
+                            </Button.Command>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <StatusBar Grid.Row="3" Background="Transparent">
+            <Button Style="{StaticResource ButtonClear}"
+                    Command="{Binding ClearErrorCommand}"/>
+            <TextBlock Text="{Binding Error}"
+                   Foreground="#4CFFFFFF"
+                   FontSize="16" ToolTip="{Binding Error}"/>
+        </StatusBar>
+    </Grid>
+</Window>

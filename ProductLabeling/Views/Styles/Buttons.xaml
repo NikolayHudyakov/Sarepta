@@ -1,0 +1,304 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="Button.Static.TextBlock.Foreground" Color="White"/>
+    <LinearGradientBrush x:Key="Button.Static.Border.FalseBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFF4563B"/>
+        <GradientStop Color="#FFAA3633" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Button.Static.Border.FalseBorderBrush" Color="#FFF86249"/>
+    <LinearGradientBrush x:Key="Button.Static.Border.TrueBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FF539556"/>
+        <GradientStop Color="#FF335E3D" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Button.Static.Border.TrueBorderBrush" Color="#FF59A05E"/>
+    <LinearGradientBrush x:Key="Button.Static.Border.TrueIsCheckedBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="OrangeRed"/>
+        <GradientStop Color="#FFAF2F00" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Button.Static.Border.TrueIsCheckedBorderBrush" Color="#FFFF6F3A"/>
+    <LinearGradientBrush x:Key="Button.Static.Border.FalseIsCheckedBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#7C7C7C"/>
+        <GradientStop Color="#4A4A4A" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Button.Static.Border.FalseIsCheckedBorderBrush" Color="#9C9C9C"/>
+    <LinearGradientBrush x:Key="Button.IsMouseOver.Border.FalseBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFFF6648"/>
+        <GradientStop Color="#FFDE4642" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Button.IsMouseOver.Border.TrueBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FF56975A"/>
+        <GradientStop Color="#FF577B5B" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Button.IsMouseOver.Border.TrueIsCheckedBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FF5510"/>
+        <GradientStop Color="#FFCF4F00" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Button.IsMouseOver.Border.FalseIsCheckedBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#7C7C7C"/>
+        <GradientStop Color="#6A6A6A" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="ButtonReset.Static.TextBlock.Foreground" Color="#FF8080"/>
+    <SolidColorBrush x:Key="ButtonReset.IsMouseOver.TextBlock.Foreground" Color="#E63E31"/>
+    <SolidColorBrush x:Key="ButtonClear.Static.TextBlock.Foreground" Color="#FF1CA4B5" />
+    <SolidColorBrush x:Key="ButtonClear.IsMouseOver.TextBlock.Foreground" Color="#FF0D5D67"/>
+    <Style x:Key="ButtonOnOffSystem">
+        <Setter Property="Button.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="Border" BorderThickness="1" CornerRadius="1" 
+                                Width="{TemplateBinding  Width}" Height="{TemplateBinding  Height}" 
+                                BorderBrush="{StaticResource Button.Static.Border.FalseBorderBrush}" 
+                                Background="{StaticResource Button.Static.Border.FalseBackground}"/>
+                        <TextBlock x:Name="TextBlock" Text="ВКЛЮЧИТЬ СИСТЕМУ"
+                                   FontSize ="18"  FontWeight ="ExtraBold" FontFamily="Yu Gothic UI"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Foreground="{StaticResource Button.Static.TextBlock.Foreground}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="true">
+                            <Setter TargetName="Border" Property="Background" 
+                                    Value="{StaticResource Button.Static.Border.TrueBackground}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" 
+                                    Value="{StaticResource Button.Static.Border.TrueBorderBrush}"/>
+                            <Setter TargetName="TextBlock" Property="Text" Value="ВЫКЛЮЧИТЬ СИСТЕМУ"/>
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding ="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                <Condition Binding ="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="true"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Border" Property="Background" 
+                                    Value="{StaticResource Button.IsMouseOver.Border.TrueBackground}"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding ="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                <Condition Binding ="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="false"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Border" Property="Background" 
+                                    Value="{StaticResource Button.IsMouseOver.Border.FalseBackground}"/>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ToggleButtonOnOff">
+        <Setter Property="ToggleButton.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid>
+                        <Border x:Name="Border" BorderThickness="1" CornerRadius="1" 
+                                Width="{TemplateBinding  Width}" Height="{TemplateBinding  Height}" 
+                                BorderBrush="{StaticResource Button.Static.Border.FalseBorderBrush}" 
+                                Background="{StaticResource Button.Static.Border.FalseBackground}"/>
+                        <TextBlock x:Name="TextBlock" Text="ВКЛЮЧИТЬ"
+                                   FontSize ="14"  FontWeight ="ExtraBold" FontFamily="Yu Gothic UI"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Foreground="{StaticResource Button.Static.TextBlock.Foreground}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="Border" Property="Background" 
+                                    Value="{StaticResource Button.Static.Border.TrueBackground}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" 
+                                    Value="{StaticResource Button.Static.Border.TrueBorderBrush}"/>
+                            <Setter TargetName="TextBlock" Property="Text" Value="ВЫКЛЮЧИТЬ"/>
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding ="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                <Condition Binding ="{Binding Path=IsChecked, RelativeSource={RelativeSource Self}}" Value="true"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Border" Property="Background" 
+                                    Value="{StaticResource Button.IsMouseOver.Border.TrueBackground}"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding ="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                <Condition Binding ="{Binding Path=IsChecked, RelativeSource={RelativeSource Self}}" Value="false"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Border" Property="Background" 
+                                    Value="{StaticResource Button.IsMouseOver.Border.FalseBackground}"/>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ToggleButton">
+        <Setter Property="ToggleButton.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid>
+                        <Border x:Name="Border" BorderThickness="1" CornerRadius="1"
+                                Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+                                BorderBrush="{StaticResource Button.Static.Border.FalseIsCheckedBorderBrush}"
+                                Background="{StaticResource Button.Static.Border.FalseIsCheckedBackground}"/>
+                        <TextBlock x:Name="TextBlock" Text="{TemplateBinding Content}"
+                                   FontSize ="{TemplateBinding FontSize}"  FontWeight ="Normal" FontFamily="Yu Gothic UI"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Foreground="{StaticResource Button.Static.TextBlock.Foreground}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Button.Static.Border.TrueIsCheckedBackground}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource Button.Static.Border.TrueIsCheckedBorderBrush}"/>
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding ="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                <Condition Binding ="{Binding Path=IsChecked, RelativeSource={RelativeSource Self}}" Value="true"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Button.IsMouseOver.Border.TrueIsCheckedBackground}"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding ="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                <Condition Binding ="{Binding Path=IsChecked, RelativeSource={RelativeSource Self}}" Value="false"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Button.IsMouseOver.Border.FalseIsCheckedBackground}"/>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonAddRemove">
+        <Setter Property="Button.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="Border" BorderThickness="1" CornerRadius="1" 
+                            Width="{TemplateBinding  Width}" Height="{TemplateBinding  Height}" 
+                            BorderBrush="{StaticResource Button.Static.Border.FalseBorderBrush}" 
+                            Background="{StaticResource Button.Static.Border.FalseBackground}"/>
+                        <TextBlock x:Name="TextBlock" Text="Удаление"
+                               FontSize ="18"  FontWeight ="ExtraBold" FontFamily="Yu Gothic UI"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="{StaticResource Button.Static.TextBlock.Foreground}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="1">
+                            <Setter TargetName="Border" Property="Background" 
+                                Value="{StaticResource Button.Static.Border.TrueBackground}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" 
+                                Value="{StaticResource Button.Static.Border.TrueBorderBrush}"/>
+                            <Setter TargetName="TextBlock" Property="Text" Value="Добавление"/>
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding ="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                <Condition Binding ="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="1"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Border" Property="Background" 
+                                Value="{StaticResource Button.IsMouseOver.Border.TrueBackground}"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding ="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                <Condition Binding ="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" Value="0"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Border" Property="Background" 
+                                Value="{StaticResource Button.IsMouseOver.Border.FalseBackground}"/>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonRed">
+        <Setter Property="Button.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="Border" BorderThickness="1" CornerRadius="1" 
+                                Width="{TemplateBinding  Width}" Height="{TemplateBinding  Height}" 
+                                BorderBrush="{StaticResource Button.Static.Border.FalseBorderBrush}"
+                                Background="{StaticResource Button.Static.Border.FalseBackground}"/>
+                        <DockPanel>
+                            <ContentPresenter Content="{TemplateBinding  Content}" 
+                                              VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                              TextBlock.FontFamily="Yu Gothic UI" TextBlock.FontWeight="Normal" 
+                                              TextBlock.FontSize="{TemplateBinding FontSize}" 
+                                              TextBlock.Foreground="{StaticResource Button.Static.TextBlock.Foreground}"/>
+                        </DockPanel>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Border" Property="Background" 
+                                    Value="{StaticResource Button.IsMouseOver.Border.FalseBackground}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonGreen">
+        <Setter Property="Button.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="Border" BorderThickness="1" CornerRadius="1" 
+                                Width="{TemplateBinding  Width}" Height="{TemplateBinding  Height}" 
+                                BorderBrush="{StaticResource Button.Static.Border.TrueBorderBrush}"
+                                Background="{StaticResource Button.Static.Border.TrueBackground}"/>
+                        <DockPanel>
+                            <ContentPresenter Content="{TemplateBinding  Content}" 
+                                              VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                              TextBlock.FontFamily="Yu Gothic UI"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}" 
+                                              TextBlock.FontWeight="{TemplateBinding FontWeight}"
+                                              TextBlock.Foreground="{StaticResource Button.Static.TextBlock.Foreground}" />
+                        </DockPanel>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Border" Property="Background" 
+                                    Value="{StaticResource Button.IsMouseOver.Border.TrueBackground}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonReset">
+        <Setter Property="Button.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <TextBlock x:Name="Textblock" Text="Сброс" FontSize="20" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Foreground="{StaticResource ButtonReset.Static.TextBlock.Foreground}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Textblock" Property="Foreground" 
+                                    Value="{StaticResource ButtonReset.IsMouseOver.TextBlock.Foreground}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonClear">
+        <Setter Property="Button.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <TextBlock x:Name="Textblock" Text="Очистить" FontSize="20" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="{StaticResource ButtonClear.Static.TextBlock.Foreground}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Textblock" Property="Foreground" 
+                            Value="{StaticResource ButtonClear.IsMouseOver.TextBlock.Foreground}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,362 @@
+﻿<Window x:Class="ProductLabeling.Views.Windows.AppSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cmd="clr-namespace:ProductLabeling.Commands"
+        xmlns:local="clr-namespace:ProductLabeling.Views.Windows"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:dbdto="clr-namespace:ProductLabeling.DataBase.Dto"
+        xmlns:prts="clr-namespace:System.IO.Ports;assembly=System"
+        mc:Ignorable="d"
+        DataContext="{Binding AppSettingsWindowViewModel, Source={StaticResource VMLocator}}"
+        Title="AppSettingsWindow" 
+        Height="500" Width="700" Background="#0F3E38" 
+        WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" 
+        BorderThickness="1" BorderBrush="OrangeRed" Topmost="True">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="dbmsEnum" MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dbdto:Dbms"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="ParityEnum" MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="prts:Parity"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="StopBitsEnum" MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="prts:StopBits"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="28"/>
+        </Grid.RowDefinitions>
+        <Label Content="Настройки" 
+               Foreground="#FFC477"
+               FontSize="28"
+               VerticalAlignment="Center"/>
+        <Button Content="X" Style="{StaticResource ButtonRed}" 
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:AppSettingsWindow}}"
+                HorizontalAlignment="Right"
+                Margin="5" FontSize="20"
+                Width="60">
+            <Button.Command>
+                <cmd:CloseWindowCommand/>
+            </Button.Command>
+        </Button>
+        <Button Content="Сохранить" Style="{StaticResource ButtonGreen}"
+                Command="{Binding SaveAppSetingsCommand}"
+                HorizontalAlignment="Center"
+                Margin="5" FontSize="20"
+                Width="120"/>
+        <Button Margin="300,5,5,5" FontSize="20"
+                Width="50" Visibility="Collapsed">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="/Views/Icons/keyboard.png"/>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Command>
+                <cmd:ShowKeyboardCommand/>
+            </Button.Command>
+        </Button>
+        <TreeView Grid.Row="1" BorderThickness="0" 
+                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                  ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <TreeView.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#79000000"/>
+                    <GradientStop Color="#44000000" Offset="0.5"/>
+                    <GradientStop Color="#79000000" Offset="1"/>
+                </LinearGradientBrush>
+            </TreeView.Background>
+            <TreeView.Resources>
+                <Style TargetType="Label">
+                    <Style.Setters>
+                        <Setter Property="Foreground" Value="#4CFFFFFF"/>
+                        <Setter Property="FontSize" Value="25"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                    </Style.Setters>
+                </Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Template" >
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                <Border CornerRadius="2" BorderThickness="1"
+                                        BorderBrush="#4CFFFFFF"
+                                        Background="#4C000000">
+                                    <ScrollViewer x:Name="PART_ContentHost" Focusable="False" 
+                                      HorizontalScrollBarVisibility="Hidden" 
+                                      VerticalScrollBarVisibility="Hidden"/>
+                                </Border>
+                            </ControlTemplate>
+
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="FontSize" Value="25"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="Width" Value="300"/>
+                    <Setter Property="CaretBrush" Value="#FFFF6F3A"/>
+                </Style>
+                <Style TargetType="Grid">
+                    <Style.Setters>
+                        <Setter Property="Width" Value="610"/>
+                    </Style.Setters>
+                </Style>
+            </TreeView.Resources>
+            <TreeViewItem Header="IO модуль" Foreground="#FFFF6F3A" FontSize="30">
+                <StackPanel>
+                    <Grid>
+                        <Label Content="IP адрес"/>
+                        <TextBox Text="{Binding Dto.IoModule.IPAddress}" InputScope="Number"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Порт"/>
+                        <TextBox Text="{Binding Dto.IoModule.Port}" InputScope="Number"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="ID подчиненго устройства"/>
+                        <TextBox Text="{Binding Dto.IoModule.SlaveAddress}" InputScope="Number"/>
+                    </Grid>
+                    <TreeViewItem Header="Модуль дискретных входов" Foreground="#FFFF6F3A" FontSize="30">
+                        <StackPanel>
+                            <Grid Width="570">
+                                <Label Content="Начальный регистр"/>
+                                <TextBox Text="{Binding Dto.IoModule.DiStartAddress}" InputScope="Number"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Кол-во регистров"/>
+                                <TextBox Text="{Binding Dto.IoModule.DiNumberOfPoints}" InputScope="Number"/>
+                            </Grid>
+                        </StackPanel>
+                    </TreeViewItem>
+                    <TreeViewItem Header="Модуль энкодера" Foreground="#FFFF6F3A" FontSize="30">
+                        <StackPanel>
+                            <Grid Width="570">
+                                <Label Content="Начальный регистр"/>
+                                <TextBox Text="{Binding Dto.IoModule.EncoderStartAddress}" InputScope="Number"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Кол-во регистров"/>
+                                <TextBox Text="{Binding Dto.IoModule.EncoderNumberOfPoints}" InputScope="Number"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Период опроса (мс)"/>
+                                <TextBox Text="{Binding Dto.IoModule.EncoderPollingPeriod}" InputScope="Number"/>
+                            </Grid>
+                        </StackPanel>
+                    </TreeViewItem>
+                </StackPanel>
+            </TreeViewItem>
+            <TreeViewItem Header="Автоматический сканер" Foreground="#FFFF6F3A" FontSize="30">
+                <StackPanel>
+                    <Grid>
+                        <Label Content="IP адрес"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.CodeReader.IPAddress}" 
+                                 InputScope="Number"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Порт"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.CodeReader.Port}" InputScope="Number"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Таймаут получения (мс)"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.CodeReaderRecieveTimeout}" InputScope="Number"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Строка NoRead"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.CodeReaderNoreadString}"/>
+                    </Grid>
+                </StackPanel>
+            </TreeViewItem>
+            <TreeViewItem Header="Ручной сканер" Foreground="#FFFF6F3A" FontSize="30">
+                <StackPanel>
+                    <Grid>
+                        <Label Content="Имя порта"/>
+                        <ComboBox ItemsSource="{Binding PortNames}" 
+                                  SelectedItem="{Binding Dto.FirstStage.HandReading.HandCodeReader.PortName}"
+                                  HorizontalAlignment="Right"
+                                  MinWidth="100" MaxWidth="300" Height="35"
+                                  FontSize="22"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Скорость передачи данных"/>
+                        <ComboBox ItemsSource="{Binding BaudRates}" 
+                                  SelectedItem="{Binding Dto.FirstStage.HandReading.HandCodeReader.Baudrate}"
+                                  HorizontalAlignment="Right"
+                                  MinWidth="100" MaxWidth="300" Height="35"
+                                  FontSize="22"/>
+                    </Grid>
+                </StackPanel>
+            </TreeViewItem>
+            <TreeViewItem Header="База данных" Foreground="#FFFF6F3A" FontSize="30">
+                <StackPanel>
+                    <Grid>
+                        <Label Content="СУБД"/>
+                        <ComboBox HorizontalAlignment="Right" 
+                                  Height="35" MinWidth="100" MaxWidth="300" FontSize="22"
+                                  ItemsSource="{Binding Source={StaticResource dbmsEnum}}"
+                                  SelectedItem="{Binding Dto.DataBase.DbmsType}"/>
+                    </Grid>
+                    <TreeViewItem Header="PostgreSql" Foreground="#FFFF6F3A" FontSize="30">
+                        <StackPanel>
+                            <Grid Width="570">
+                                <Label Content="Сервер"/>
+                                <TextBox Text="{Binding Dto.DataBase.PostgreSql.Server}"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Порт"/>
+                                <TextBox Text="{Binding Dto.DataBase.PostgreSql.Port}" InputScope="Number"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Пользователь"/>
+                                <TextBox Text="{Binding Dto.DataBase.PostgreSql.User}"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Пароль"/>
+                                <TextBox Text="{Binding Dto.DataBase.PostgreSql.Password}" InputScope="Password"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Имя базы данных"/>
+                                <TextBox Text="{Binding Dto.DataBase.PostgreSql.DataBase}"/>
+                            </Grid>
+                        </StackPanel>
+                    </TreeViewItem>
+                    <TreeViewItem Header="MySql" Foreground="#FFFF6F3A" FontSize="30">
+                        <StackPanel>
+                            <Grid Width="570">
+                                <Label Content="Сервер"/>
+                                <TextBox Text="{Binding Dto.DataBase.MySql.Server}"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Порт"/>
+                                <TextBox Text="{Binding Dto.DataBase.MySql.Port}" InputScope="Number"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Пользователь"/>
+                                <TextBox Text="{Binding Dto.DataBase.MySql.User}"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Пароль"/>
+                                <TextBox Text="{Binding Dto.DataBase.MySql.Password}" InputScope="Password"/>
+                            </Grid>
+                            <Grid Width="570">
+                                <Label Content="Имя базы данных"/>
+                                <TextBox Text="{Binding Dto.DataBase.MySql.DataBase}"/>
+                            </Grid>
+                        </StackPanel>
+                    </TreeViewItem>
+                </StackPanel>
+            </TreeViewItem>
+            <TreeViewItem Header="Энкодер" Foreground="#FFFF6F3A" FontSize="30">
+                <StackPanel>
+                    <Grid>
+                        <Label Content="Диаметр колеса (мм)"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.WheelDiameter}" InputScope="Number"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Разрешение"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.EncoderResolution}" InputScope="Number"/>
+                    </Grid>
+                </StackPanel>
+            </TreeViewItem>
+            <TreeViewItem Foreground="#FFFF6F3A" FontSize="30">
+                <TreeViewItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="297*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RenderTransform>
+                            <TranslateTransform X="-5"/>
+                        </Grid.RenderTransform>
+                        <Label Content="Отбраковщик" Foreground="#FFFF6F3A" FontSize="30"/>
+                        <ToggleButton Style="{StaticResource ToggleButtonOnOff}" 
+                                IsChecked="{Binding Dto.FirstStage.AutoReading.RejecterIsEnable}"
+                                HorizontalAlignment="Left"
+                                Width="100" Height="30" Grid.ColumnSpan="2" Margin="510,0,0,0">
+                            <ToggleButton.RenderTransform>
+                                <TranslateTransform X="24"/>
+                            </ToggleButton.RenderTransform>
+                        </ToggleButton>
+                    </Grid>
+                </TreeViewItem.Header>
+                <StackPanel>
+                    <Grid>
+                        <Label Content="Режим работы"/>
+                        <ComboBox SelectedIndex="{Binding Dto.FirstStage.AutoReading.RejecterMode}"
+                                  HorizontalAlignment="Right"
+                                  MinWidth="100" MaxWidth="300" Height="35" FontSize="22">
+                            <ComboBoxItem Content="Энкодер"/>
+                            <ComboBoxItem Content="Задержка"/>
+                        </ComboBox>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Расстояние до датчика (м)"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.RejecterDistance}" InputScope="Number"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Задержка (мс)"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.RejecterDelay}" InputScope="Number"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Время работы (мс)"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.RejecterDuration}" InputScope="Number"/>
+                    </Grid>
+                </StackPanel>
+            </TreeViewItem>
+            <TreeViewItem Header="Светозвуковая колона (длительность в мс)" 
+                          Foreground="#FFFF6F3A" FontSize="30">
+                <StackPanel>
+                    <Grid>
+                        <Label Content="Желтый цвет (отбраковка)"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.YellowDuration}" InputScope="Number"/>
+                    </Grid>
+                    <Grid>
+                        <Label Content="Звук (остановка линии)"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.StopLinePulseDuration}" InputScope="Number"/>
+                    </Grid>
+                </StackPanel>
+            </TreeViewItem>
+            <TreeViewItem Header="Дополнительные настройки" 
+                          Foreground="#FFFF6F3A" FontSize="30">
+                <StackPanel>
+                    <Grid>
+                        <Label Content="Длительность тригера (мс)"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.CodeReaderTriggerDuration}" InputScope="Number"/>
+                    </Grid>
+                    
+                    <Grid>
+                        <Label Content="Подряд отбр. продуктов"/>
+                        <TextBox Text="{Binding Dto.FirstStage.AutoReading.StopLineCount}" InputScope="Number"/>
+                    </Grid>
+                    <Grid Margin="5">
+                        <TextBox Name="Password" InputScope="Password"/>
+                        <Button Content="ИЗМЕНИТЬ ПАРОЛЬ" Style="{StaticResource ButtonGreen}"
+                                Command="{Binding ChangePasswordCommand}"
+                                CommandParameter="{Binding ElementName=Password, Path=Text}"
+                                FontSize="14" FontWeight="ExtraBold" HorizontalAlignment="Left"
+                                Width="160" Margin="6,0,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </TreeViewItem>
+        </TreeView>
+        <StatusBar Grid.Row="2" Background="Transparent">
+            <TextBlock Text="{Binding Error}"
+                   Foreground="#4CFFFFFF"
+                   FontSize="16" ToolTip="{Binding Error}"/>
+        </StatusBar>
+    </Grid>
+</Window>

@@ -1,0 +1,26 @@
+﻿<Application x:Class="ProductLabeling.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ProductLabeling"
+             xmlns:ioc="clr-namespace:ProductLabeling.IoC"
+             xmlns:conv="clr-namespace:ProductLabeling.Converters"
+             StartupUri="Views/Windows/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ioc:ViewModelsLocator x:Key="VMLocator"/>
+            <conv:InversBoolConverter x:Key="InversBoolConverter"/>
+            <conv:VisibilityConverter x:Key="VisibilityConverter"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Views/Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="Views/Styles/Comboboxes.xaml"/>
+                <ResourceDictionary Source="Views/Styles/TabControls.xaml"/>
+                <ResourceDictionary Source="Views/Styles/TextBoxes.xaml"/>
+                <ResourceDictionary Source="Views/Styles/TreeViews.xaml"/>
+                <ResourceDictionary Source="Views/Styles/TextBlocks.xaml"/>
+                <ResourceDictionary Source="Views/Styles/MenuItems.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
