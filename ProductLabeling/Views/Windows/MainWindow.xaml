@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductLabeling.Views.Windows"
-        xmlns:cmd="clr-namespace:ProductLabeling.Commands"
+        xmlns:cmd="clr-namespace:ProductLabeling.Commands" xmlns:viewmodels="clr-namespace:ProductLabeling.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
         mc:Ignorable="d"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource VMLocator}}"
         WindowStartupLocation="CenterScreen"
@@ -118,7 +118,7 @@
             <TabItem Header="Авто сканер">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="28*"/>
+                        <RowDefinition Height="30*"/>
                         <RowDefinition Height="60*"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
@@ -282,44 +282,68 @@
             <TabItem Header="Ручной сканер">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="35*"/>
+                        <RowDefinition Height="30*"/>
                         <RowDefinition Height="60*"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30*"/>
+                            <ColumnDefinition Width="70*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.Resources>
-                            <Style TargetType="{x:Type StackPanel}">
-                                <Style.Setters>
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style.Setters>
-                            </Style>
                             <Style TargetType="{x:Type Label}">
                                 <Style.Setters>
                                     <Setter Property="Foreground" Value="#4CFFFFFF"/>
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                    <Setter Property="FontSize" Value="30"/>
-                                </Style.Setters>
-                            </Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Setters>
-                                    <Setter Property="Foreground" Value="white"/>
-                                    <Setter Property="FontSize" Value="60"/>
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="FontSize" Value="20"/>
                                 </Style.Setters>
                             </Style>
                         </Grid.Resources>
-                        <StackPanel Grid.Column="0">
-                            <Label Content="Добавлено"/>
-                            <TextBlock Text="{Binding OkHand}"/>
+                        <StackPanel Grid.Row="0">
+                            <Label Content="Выбор режима"/>
+                            <Button Style="{StaticResource ButtonAddRemove}"
+            Width="150" Height="40" FontSize="24" Margin="6,0,0,0"
+            HorizontalAlignment="Left" Tag="{Binding HandCodeReaderSelectedMode}"
+            Command="{Binding HandCodeReaderSwitchingModeCommand}"/>
                         </StackPanel>
-                        <StackPanel Grid.Column="1">
-                            <Label Content="Удалено"/>
-                            <TextBlock Text="{Binding NgHand}"/>
-                        </StackPanel>
+
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="{x:Type StackPanel}">
+                                    <Style.Setters>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style.Setters>
+                                </Style>
+                                <Style TargetType="{x:Type Label}">
+                                    <Style.Setters>
+                                        <Setter Property="Foreground" Value="#4CFFFFFF"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="FontSize" Value="30"/>
+                                    </Style.Setters>
+                                </Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Setters>
+                                        <Setter Property="Foreground" Value="white"/>
+                                        <Setter Property="FontSize" Value="60"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style.Setters>
+                                </Style>
+                            </Grid.Resources>
+                            <StackPanel Grid.Column="0">
+                                <Label Content="Добавлено"/>
+                                <TextBlock Text="{Binding OkHand}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <Label Content="Удалено"/>
+                                <TextBlock Text="{Binding NgHand}"/>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
+                    
+                    
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -358,13 +382,25 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
+
                             <StackPanel Grid.Row="0">
-                                <Label Content="Выбор режима"/>
-                                <Button Style="{StaticResource ButtonAddRemove}"
-                                        Width="150" Height="40" FontSize="24" Margin="6,0,0,0"
-                                        HorizontalAlignment="Left" Tag="{Binding HandCodeReaderSelectedMode}"
-                                        Command="{Binding HandCodeReaderSwitchingModeCommand}"/>
+                                <Label Content="Выбор продукта"/>
+                                <ComboBox Grid.Row="0"
+                                          VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                                          SelectedIndex="0" ItemsSource="{Binding Products}" SelectedValue="{Binding SelectedProductHand}"
+                                          MaxWidth="674" MinWidth="100" Height="65"
+                                          FontWeight="Normal" Margin="6,0,0,0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Name}" FontSize="24"/>
+                                                <TextBlock Text="{Binding Gtin}" FontSize="20" Foreground="#4CFFFFFF"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
+
                             <StackPanel Grid.Row="1">
                                 <Label Content="Код"/>
                                 <TextBox Text="{Binding HandCodeReaderData}"/>
