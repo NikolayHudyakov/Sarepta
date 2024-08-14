@@ -51,7 +51,7 @@ namespace ProductLabeling.ViewModels
 
         private string? _codeReaderData;
         private string? _handCodeReaderData;
-        
+
         private string? _messageSatge1;
         private string? _messageHand;
 
@@ -76,24 +76,24 @@ namespace ProductLabeling.ViewModels
 
         #region Properties
         public ObservableCollection<Product> Products => _products ??= _productsService.Deserialize();
-        public Product? SelectedProduct 
+        public Product? SelectedProduct
         {
             set
             {
                 _model.FirstStage.AutoReading.SelectedProduct = value;
                 _model.FirstStage.HandReading.SelectedProduct = value;
             }
-            get => _model.FirstStage.AutoReading.SelectedProduct; 
+            get => _model.FirstStage.AutoReading.SelectedProduct;
         }
 
-        public int HandCodeReaderSelectedMode 
+        public int HandCodeReaderSelectedMode
         {
             set
             {
                 _model.FirstStage.HandReading.HandCodeReaderSelectedMode = value;
                 OnPropertyChanget(nameof(HandCodeReaderSelectedMode));
             }
-            get => _model.FirstStage.HandReading.HandCodeReaderSelectedMode!; 
+            get => _model.FirstStage.HandReading.HandCodeReaderSelectedMode;
         }
 
         public bool Status
@@ -113,10 +113,10 @@ namespace ProductLabeling.ViewModels
         }
         public bool CodeReaderStatus
         {
-            get => _codeReaderStatus; 
+            get => _codeReaderStatus;
             set => Set(ref _codeReaderStatus, value);
         }
-        
+
         public bool HandCodeReaderStatus
         {
             get => _handCodeReaderStatus;
@@ -142,63 +142,47 @@ namespace ProductLabeling.ViewModels
             set => Set(ref _isEnable, value);
         }
 
-        public int TotalStage1 
-        { 
+        public int TotalStage1
+        {
             get => _totalStage1;
-            set
-            {
-                Set(ref _totalStage1, value);
-                AllOK = OkStage1 + OkHand - NgHand;
-            }
+            set => Set(ref _totalStage1, value);
         }
-        public int ReadStage1 
-        { 
-            get => _readStage1; 
-            set => Set(ref _readStage1, value); 
+        public int ReadStage1
+        {
+            get => _readStage1;
+            set => Set(ref _readStage1, value);
         }
         public int OkStage1
-        { 
+        {
             get => _okStage1;
-            set => Set(ref _okStage1, value); 
+            set => Set(ref _okStage1, value);
         }
         public int NgStage1
-        { 
-            get => _ngStage1; 
+        {
+            get => _ngStage1;
             set => Set(ref _ngStage1, value);
         }
         public int TotalHand
-        { 
+        {
             get => _totalHand;
-            set
-            {
-                Set(ref _totalHand, value);
-                AllOK = OkStage1 + OkHand - NgHand;
-            }
+            set => Set(ref _totalHand, value);
         }
-        public int ReadHand 
-        { 
+        public int ReadHand
+        {
             get => _readHand;
             set => Set(ref _readHand, value);
         }
-        public int OkHand 
+        public int OkHand
         {
-            get => _okHand; 
-            set 
-            {
-                Set(ref _okHand, value);
-                AllOK = OkStage1 + OkHand - NgHand;
-            } 
+            get => _okHand;
+            set => Set(ref _okHand, value);
         }
         public int NgHand
-        { 
-            get => _ngHand; 
-            set 
-            {
-                Set(ref _ngHand, value);
-                AllOK = OkStage1 + OkHand - NgHand;
-            }
+        {
+            get => _ngHand;
+            set => Set(ref _ngHand, value);
         }
-        
+
         public string? CodeReaderData
         {
             get => _codeReaderData;
@@ -220,23 +204,11 @@ namespace ProductLabeling.ViewModels
             get => _messageHand;
             set => Set(ref _messageHand, value);
         }
-        
+
         public double Velosity
         {
             get => Math.Round(_velosity, 2);
             set => Set(ref _velosity, value);
-        }
-
-        public int AllOK
-        {
-            get => _allOK;
-            set => Set(ref _allOK, value);
-        }
-
-        public long AllDB
-        {
-            get => _allDB;
-            set => Set(ref _allDB, value);
         }
 
         public double TimeDI0
@@ -268,7 +240,7 @@ namespace ProductLabeling.ViewModels
         public ICommand RebootCommand => new RelayCommand(RebootAsync);
         public ICommand ShutdownCommand => new RelayCommand(ShutdownAsync);
         public ICommand ResetStage1Command => new RelayCommand(ResetCounts);
-        public ICommand ResetHandCommand => new RelayCommand(ResetCounts);
+        public ICommand ResetHandCommand => new RelayCommand(ResetHandCounts);
         public ICommand AddProductCommand => new AddProductShowDialogCommand(AddProduct);
         public ICommand RemoveProductCommand => new RelayCommand(RemoveProduct);
         public ICommand SaveProductCommand => new RelayCommand(SaveProduct);
@@ -290,7 +262,7 @@ namespace ProductLabeling.ViewModels
         {
             try
             {
-                _productsService.Serialize(_products ?? new ());
+                _productsService.Serialize(_products ?? new());
                 new SavedWindow().Show();
             }
             catch (Exception ex)
@@ -469,22 +441,19 @@ namespace ProductLabeling.ViewModels
 
         private void ResetCounts()
         {
-           _logger.Info(String.Format("Pressed button Reset: Total={0} Read={1} OK={2} Brak={3} HAdd={4} HDel={5}",
-                _model.FirstStage.AutoReading.Counter.Total.ToString(),
-                _model.FirstStage.AutoReading.Counter.Read.ToString(),
-                _model.FirstStage.AutoReading.Counter.Ok.ToString(),
-                _model.FirstStage.AutoReading.Counter.Ng.ToString(),
-                _model.FirstStage.HandReading.Counter.Ok.ToString(),
-                _model.FirstStage.HandReading.Counter.Ng.ToString()));
             _model.FirstStage.AutoReading.Counter.Reset();
-            _model.FirstStage.HandReading.Counter.Reset();
             CodeReaderData = string.Empty;
             MessageStage1 = string.Empty;
+
+
+        }
+
+        private void ResetHandCounts()
+        {
+            _model.FirstStage.HandReading.Counter.Reset();
             HandCodeReaderData = string.Empty;
             MessageHand = string.Empty;
-            AllOK = 0;
-            AllDB = 0;
-            
+
         }
 
         private void ClearError()

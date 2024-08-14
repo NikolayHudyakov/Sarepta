@@ -106,7 +106,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
             var res = _dataBase.ExecuteSqlRaw(
                 """
                 INSERT INTO codes (dtime_ins, code, status, dtime_status)
-                VALUES ({0}, {1}, {2}, {3}, {4});
+                VALUES ({0}, {1}, {2}, {3});
                 """,
                 dateTimeNow, data, Status1, dateTimeNow);
 
