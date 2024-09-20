@@ -46,7 +46,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
 
             Match match = _regexCode.Match(data);
 
-            if (match.Success)
+            if (true)
             {
                 await Task.Run(() =>
                 {
@@ -98,9 +98,6 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
             if (!data.Contains(SelectedProduct.Gtin))
                 return "Не соответствие Gtin";
 
-            var dateTimeNow = GetDateTimeNow();
-            var dateNowForBatch = GetDateNow();
-
             _timerDb.Restart();
 
             var res = _dataBase.ExecuteSqlRaw(
@@ -108,7 +105,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
                 INSERT INTO codes (dtime_ins, code, status, dtime_status)
                 VALUES ({0}, {1}, {2}, {3});
                 """,
-                dateTimeNow, data, Status1, dateTimeNow);
+                DateTime.Now, data, Status1, DateTime.Now);
 
             _timerDb.Stop();
             TimeDb?.Invoke(_timerDb.Elapsed.TotalMilliseconds);

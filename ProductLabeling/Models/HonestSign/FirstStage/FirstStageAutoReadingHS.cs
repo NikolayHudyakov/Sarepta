@@ -157,7 +157,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
                 INSERT INTO codes (dtime_ins, code, status, dtime_status)
                 VALUES ({0}, {1}, {2}, {3});
                 """,
-                dateTimeNow, code, Status1, dateTimeNow);
+                DateTime.Now, code, Status1, DateTime.Now);
 
             _timerDb.Stop();
             TimeDb?.Invoke(_timerDb.Elapsed.TotalMilliseconds);
