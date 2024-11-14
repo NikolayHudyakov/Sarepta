@@ -60,6 +60,8 @@ namespace ProductLabeling.Models
 
             while (_isEnable)
             {
+                Thread.Sleep(StatusTimeout);
+
                 bool status = GetStatusModel();
 
                 if (status == previousStatus && startStatus)
@@ -70,8 +72,6 @@ namespace ProductLabeling.Models
 
                 _devices.TrafficLight.LightGreen(status);
                 _devices.TrafficLight.LightRed(!status);
-
-                Thread.Sleep(StatusTimeout);
             }
         }
 

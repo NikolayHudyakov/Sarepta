@@ -14,9 +14,7 @@
 	  <Company>Motrum</Company>
 	  <Description></Description>
 	  <Authors>Nikolay Hudyakov</Authors>
-	  <AssemblyVersion>2.1.1</AssemblyVersion>
-	  <FileVersion>2.1.1</FileVersion>
-	  <Version>2.1.1</Version>
+	  <Version>2.1.2</Version>
 	  <AssemblyName>Marking</AssemblyName>
 	  <BaseOutputPath>bin</BaseOutputPath>
 	  <AllowUnsafeBlocks>False</AllowUnsafeBlocks>

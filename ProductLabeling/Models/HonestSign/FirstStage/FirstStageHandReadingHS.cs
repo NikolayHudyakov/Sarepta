@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using ProductLabeling.DataBase.Interfases;
+using ProductLabeling.Logging;
 using ProductLabeling.Models.Interfaces;
 using ProductLabeling.Models.Interfaces.FirstStage;
 using ProductLabeling.Services.Dto;
 using ProductLabeling.Services.Intefaces;
 using System;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProductLabeling.Models.HonestSign.FirstStage
@@ -15,16 +15,15 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
     {
         private readonly ISerialPortService _codeReader;
         private readonly IDataBase _dataBase;
-
-        private readonly Regex _regexCode = new(@"^01\d{14}21.{5,13}[\x1D]93.{4}$");
+        private readonly ILogger _logger;
 
         private readonly Stopwatch _timerDb = new();
 
-        public FirstStageHandReadingHS(ISerializerService<AppSettingsDto> appSettings, IDevices devices, ILogger<FirstStageAutoReadingHS> logger) : base(appSettings, devices, logger)
+        public FirstStageHandReadingHS(ISerializerService<AppSettingsDto> appSettings, IDevices devices, ILogger<FirstStageHandReadingHS> logger) : base(appSettings, devices, logger)
         {
             _codeReader = devices.HandCodeReader;
             _dataBase = devices.DataBase;
-
+            _logger = logger;
             _codeReader.DataReceive += CodeReaderDataReceiveAsync;
         }
 
@@ -42,12 +41,12 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
         #region CodeReader
         private async void CodeReaderDataReceiveAsync(string data)
         {
-            CodeReaderData?.Invoke(data);
+            string[] codes = data.Trim().Split("\n\r");
 
-            Match match = _regexCode.Match(data);
-
-            if (true)
+            foreach (string code in codes)
             {
+                CodeReaderData?.Invoke(data);
+
                 await Task.Run(() =>
                 {
                     string error = string.Empty;
@@ -66,6 +65,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
                             }
                             Message?.Invoke(error);
                             Status?.Invoke(false);
+                            _logger.Error(error);
                             break;
 
                         case 0:
@@ -80,14 +80,11 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
                             }
                             Message?.Invoke(error);
                             Status?.Invoke(false);
+                            _logger.Error(error);
                             break;
                     }
                 });
-                return;
             }
-
-            Message?.Invoke("Неверный формат кода");
-            Status?.Invoke(false);
         }
 
         private string AddCode(string data)

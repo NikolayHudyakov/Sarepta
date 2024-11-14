@@ -317,6 +317,7 @@
                     </Grid>
                 </StackPanel>
             </TreeViewItem>
+            
             <TreeViewItem Header="Светозвуковая колона (длительность в мс)" 
                           Foreground="#FFFF6F3A" FontSize="30">
                 <StackPanel>
@@ -330,6 +331,7 @@
                     </Grid>
                 </StackPanel>
             </TreeViewItem>
+            
             <TreeViewItem Header="Дополнительные настройки" 
                           Foreground="#FFFF6F3A" FontSize="30">
                 <StackPanel>

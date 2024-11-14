@@ -75,10 +75,10 @@ namespace ProductLabeling.Models
 
             _trafficLight = new TrafficLight()
             {
-                Red = (value) => _ioModule.WriteSingleDOAsync(DO_2, value),
-                Yellow = (value) => _ioModule.WriteSingleDOAsync(DO_3, value),
-                Green = (value) => _ioModule.WriteSingleDOAsync(DO_4, value),
-                Buzzer = (value) => _ioModule.WriteSingleDOAsync(DO_5, value)
+                Red = (value) => _ioModule.WriteSingleDOAsync(DO_1, value),
+                Yellow = (value) => _ioModule.WriteSingleDOAsync(DO_2, value),
+                Green = (value) => _ioModule.WriteSingleDOAsync(DO_3, value),
+                Buzzer = (value) => _ioModule.WriteSingleDOAsync(DO_4, value)
             };
         }
 

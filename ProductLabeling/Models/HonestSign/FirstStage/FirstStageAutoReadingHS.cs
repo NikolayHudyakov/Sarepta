@@ -90,7 +90,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
             Counter.Total++;
         }
 
-        private void Reject() => WriteDOPulseAsync(DO_1, _dto.RejecterDuration);
+        private void Reject() => WriteDOPulseAsync(DO_5, _dto.RejecterDuration);
 
         private async void ProcessingAsync(long id)
         {
