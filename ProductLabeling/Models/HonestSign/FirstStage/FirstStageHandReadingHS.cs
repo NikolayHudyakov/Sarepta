@@ -41,11 +41,11 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
         #region CodeReader
         private async void CodeReaderDataReceiveAsync(string data)
         {
-            string[] codes = data.Trim().Split("\n\r");
+            string[] codes = data.Trim().Split("\r\n");
 
             foreach (string code in codes)
             {
-                CodeReaderData?.Invoke(data);
+                CodeReaderData?.Invoke(code);
 
                 await Task.Run(() =>
                 {
@@ -54,7 +54,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
                     switch (HandCodeReaderSelectedMode)
                     {
                         case 1:
-                            error = AddCode(data);
+                            error = AddCode(code);
 
                             if (error == string.Empty)
                             {
@@ -69,7 +69,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
                             break;
 
                         case 0:
-                            error = RemoveCode(data);
+                            error = RemoveCode(code);
 
                             if (error == string.Empty)
                             {
