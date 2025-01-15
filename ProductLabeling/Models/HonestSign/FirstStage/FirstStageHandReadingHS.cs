@@ -76,6 +76,7 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
                                 Message?.Invoke("Код удален из базы данных");
                                 Status?.Invoke(true);
                                 Counter.Ng++;
+                                Counter.Ok--;
                                 return;
                             }
                             Message?.Invoke(error);
