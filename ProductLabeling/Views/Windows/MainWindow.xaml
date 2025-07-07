@@ -496,12 +496,12 @@
                                     CommandParameter="{Binding ElementName=LBProducts, Path=SelectedIndex}"/>
                             </Grid>
                         </StackPanel>
-                        <Button Content="Сохраниить" Grid.Row="1"
+                        <Button Content="Сохранить" Grid.Row="1"
                                 Style="{StaticResource ButtonGreen}"
                                 Grid.Column="0" Width="150" Height="40" FontSize="24"
                                 Command="{Binding SaveProductCommand}"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"/>
+                                VerticalAlignment="Top" Margin="0,60,0,0"/>
                         <Button FontSize="20" Width="50" Grid.Row="1"  Visibility="Collapsed"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Bottom">

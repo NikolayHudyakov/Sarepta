@@ -100,10 +100,10 @@ namespace ProductLabeling.Models.HonestSign.FirstStage
 
             var res = _dataBase.ExecuteSqlRaw(
                 """
-                INSERT INTO codes (dtime_ins, code, status, dtime_status)
-                VALUES ({0}, {1}, {2}, {3});
+                INSERT INTO codes (dtime_ins, code, status, dtime_status, production_date)
+                VALUES ({0}, {1}, {2}, {3}, {4});
                 """,
-                DateTime.Now, data, Status1, DateTime.Now);
+                DateTime.Now, data, Status1, DateTime.Now, DateTime.Now);
 
             _timerDb.Stop();
             TimeDb?.Invoke(_timerDb.Elapsed.TotalMilliseconds);
